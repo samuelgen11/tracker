@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,7 @@ public class TimesheetService {
 					dataDto.getMeseDiRiferimento(), dataDto.getGiornoDiRiferimento(),
 					dataDto.getCodicePersona(), dataDto.getCodiceCommessa());
 			data.setId(dataKey);
-			data.setCommessaTimesheet(commessa);
+			data.setCommessa(commessa);
 			data.setTimeSheet(timeSheet);
 			timeSheet.addTimeSheet(data);
 //			TimeSheetDataDto data = createTimeSheetData(dataDto);
@@ -81,6 +82,17 @@ public class TimesheetService {
 		dto.setDataList(dataList);
 		return dto;
 	}
+//	public TimeSheetResponseDto createTimeSheet(List<TimeSheetDataDto> list, TimeSheetInputDto timeDto) {
+//
+//		TimeSheetMensileKey id = new TimeSheetMensileKey(2022, 1, "01");
+//		Optional<TimeSheet> timesheet = mensileRepo.findById(id);
+//		TimeSheet entity = timesheet.get();
+//		TimeSheetDataKey dataId = new TimeSheetDataKey(2022,1,3,"01","Ferie");
+//		Optional<TimeSheetData> dataTimesheet = timesheetRepository.findById(dataId);
+//		TimeSheetData dataEntity = dataTimesheet.get();
+//		return null;
+//
+//	}
 
 	public TimeSheetDataDto createTimeSheetData(TimeSheetDataDto timeSheetParam) {
 		try {
@@ -88,8 +100,8 @@ public class TimesheetService {
 			Commessa commessa = commessaRepo.findByCodiceCommessa(timeSheetParam.getCodiceCommessa());
 			TimeSheetData data = DtoEntityMapper.INSTANCE.fromDtoToEntityTimeSheet(timeSheetParam);
 			giornoDiRiferimento(timeSheetParam);
-			data.setCommessaTimesheet(commessa);
-			
+			data.setCommessa(commessa);
+
 			TimeSheetDataKey id = new TimeSheetDataKey(timeSheetParam.getAnnoDiRiferimento(),
 					timeSheetParam.getMeseDiRiferimento(), timeSheetParam.getGiornoDiRiferimento(),
 					timeSheetParam.getCodicePersona(), timeSheetParam.getCodiceCommessa());
